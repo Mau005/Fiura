@@ -1,0 +1,24 @@
+
+{
+    "1": {
+        "TypeFlag": 1,
+        "NameSprite": "floor.png",
+        "Sprites": [1],
+        "Animation": false,
+        "AnimatedSequence":[]
+    },
+    "2": {
+        "TypeFlag": 1,
+        "NameSprite": "floor.png",
+        "Sprites": [2],
+        "Animation": false,
+        "AnimatedSequence":[]
+    },
+    "3": {
+        "TypeFlag": 1,
+        "NameSprite": "floor.png",
+        "Sprites": [3],
+        "Animation": false,
+        "AnimatedSequence":[]
+    }
+}
