@@ -1,24 +1,39 @@
-
 {
-    "1": {
-        "TypeFlag": 1,
-        "NameSprite": "floor.png",
-        "Sprites": [1],
-        "Animation": false,
-        "AnimatedSequence":[]
-    },
-    "2": {
-        "TypeFlag": 1,
-        "NameSprite": "floor.png",
-        "Sprites": [2],
-        "Animation": false,
-        "AnimatedSequence":[]
-    },
-    "3": {
-        "TypeFlag": 1,
-        "NameSprite": "floor.png",
-        "Sprites": [3],
-        "Animation": false,
-        "AnimatedSequence":[]
+  "1": {
+    "TypeFlag": 1,
+    "NameSprite": "floor.png",
+    "Sprites": [
+      1
+    ],
+    "Animation": false,
+    "AnimatedSequence": []
+  },
+  "2": {
+    "TypeFlag": 1,
+    "NameSprite": "floor.png",
+    "Sprites": [
+      2
+    ],
+    "Animation": false,
+    "AnimatedSequence": []
+  },
+  "3": {
+    "TypeFlag": 1,
+    "NameSprite": "floor.png",
+    "Sprites": [
+      3
+    ],
+    "Animation": false,
+    "AnimatedSequence": []
+  },
+  "4": {
+    "TypeFlag": 7,
+    "NameSprite": "human.png",
+    "DirectionSprite": {
+      "1": [1, 2, 3, 4],
+      "2": [5,6,7,8],
+      "3": [9,10,11,12],
+      "4": [13,14,15,16]
     }
+  }
 }

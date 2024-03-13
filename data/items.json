@@ -1,17 +1,17 @@
 {
-    "1":{
-        "Name":"Priedra Normal",
-        "Description": "1",
-        "DataFactory": 1
-    },
-    "2":{
-        "Name":"Priedra antigua",
-        "Description": "2",
-        "DataFactory": 2
-    },
-    "3":{
-        "Name":"priedra repetida",
-        "Description": "3",
-        "DataFactory": 1
-    }
+  "1": {
+    "Name": "Priedra Normal",
+    "Description": "1",
+    "IDDataFactory": 1
+  },
+  "2": {
+    "Name": "Priedra antigua",
+    "Description": "2",
+    "IDDataFactory": 2
+  },
+  "3": {
+    "Name": "priedra repetida",
+    "Description": "3",
+    "IDDataFactory": 1
+  }
 }
