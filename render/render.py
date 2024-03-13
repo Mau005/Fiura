@@ -10,6 +10,7 @@ from core.coordinates import Coordinates
 from core.core import Core, ItemInternal
 from core.managerobject import ManagerObject
 from entity.floor import Floor
+from entity.player import Player
 from maps.map import Map
 
 
@@ -20,7 +21,7 @@ class Render(Widget):
         self.size = window
         self.core = Core()
         self.manager_object = ManagerObject(self.core)
-
+        self.player = Player(self.manager_object, 1, Coordinates(1, 2, 0))
         self.map = Map(100, 100)
         for index in range(0, 1000):
             self.map.set_position_map(Coordinates(random.randint(0, 10), random.randint(0, 10), random.randint(0, 10)),
@@ -69,6 +70,7 @@ class Render(Widget):
                     delta=kwargs.get("delta"),
                     limit_size=self.limit_size_execute(),
                     canvas=self.canvas)
+        self.canvas.add(self.player.canvas)
 
     def update(self, *args):
         for index in self.render_layers.keys():

@@ -48,7 +48,9 @@ def transform_type_object(id_str: str) -> TypeObject:
         raise Exception(ErrorType.ERROR_FLAG.value)
 
 
-def transform_direction(content: dict) -> dict:
+def transform_direction(payload: dict) -> dict:
+    print(payload)
+    content = payload.get("DirectionSprite")
     if content is None:
         return {}
     return {
@@ -66,7 +68,7 @@ class DataInternal:
         self.Sprites: Optional[list] = payload.get("Sprites")
         self.Animation: Optional[bool] = payload.get("Animation")
         self.AnimatedSequence = tuple(payload.get("AnimatedSequence", []))
-        self.DirectionSprite: Optional[dict] = transform_direction(payload.get("DirectionSprite"))
+        self.DirectionSprite: Optional[dict] = transform_direction(payload)
 
     def __str__(self) -> str:
         return '''
@@ -75,8 +77,10 @@ class DataInternal:
         self.Sprites = {}
         self.Animation = {}
         self.AnimatedSequence = {}
+        self.DirectionSprite = {}
 
-    '''.format(self.TypeFlag, self.NameSprite, self.Sprites, self.Animation, self.AnimatedSequence)
+    '''.format(self.TypeFlag, self.NameSprite, self.Sprites, self.Animation, self.AnimatedSequence,
+               self.DirectionSprite)
 
 
 class ManagerDataInternal:

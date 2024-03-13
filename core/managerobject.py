@@ -27,15 +27,16 @@ class ManagerObject:
             list_obj.append("atlas://assets/%s/%s" % (name_sprite.split(".")[0], id_items))
         return list_obj
 
+    def get_sprite_outfits_id(self, name_sprite, id_sprite):
+        if self.sprites.get(name_sprite, {}).get(str(id_sprite)) is None:
+            return None
+        return "atlas://assets/%s/%s" % (name_sprite.split(".")[0], id_sprite)
+
     def get_outfits_attribute(self, id_outfits) -> OutfitsInternal:
         internal: Optional[OutfitsInternal] = self._outfits.get(id_outfits)
         if internal is None:
             return None
-        data = self._data.get(internal.DataFactory)
-        if data is None:
-            print(internal)
-            print(data)
-        internal.add_data_factory(data)
+        internal.add_data_factory(self._data.get(internal.IDDataFactory))
         return internal
 
     def get_items_attribute(self, id_items) -> ItemInternal:
