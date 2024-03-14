@@ -34,10 +34,11 @@ class Render(Widget):
             4: [],  # entity
             5: []  # object_upper
         }
+        
         with self.canvas.before:
             # self.fbo = Fbo(size=self.size)
             self.rectangle = Rectangle(pos=self.pos, size=self.size)
-
+        self.add_widget(self.player)
         self.init_map()
 
     def init_map(self):
@@ -53,6 +54,7 @@ class Render(Widget):
                             if sprite_id is None:
                                 continue
                             floor = Floor(Coordinates(x, y, 0), source_texture=sprite_id[0])
+                            self.add_widget(floor)
                             self.render_layers[1].append(floor)
                     except AttributeError as err:
                         print(items)
@@ -65,14 +67,31 @@ class Render(Widget):
         self.rectangle.size = self.size
         self.canvas.clear()
         for index in self.render_layers.keys():
+
+            if index == 4:
+                self.player.draw(
+                    delta=kwargs.get("delta"),
+                    limit_size=self.limit_size_execute(),
+                    canvas=self.canvas)
+
             for elements in self.render_layers.get(index):
                 elements.draw(
                     delta=kwargs.get("delta"),
                     limit_size=self.limit_size_execute(),
                     canvas=self.canvas)
-        self.canvas.add(self.player.canvas)
 
     def update(self, *args):
         for index in self.render_layers.keys():
             for elements in self.render_layers.get(index):
                 elements.update()
+
+    def check_collisions(self):
+        for obj1 in self.collidable_objects:
+            for obj2 in self.collidable_objects:
+                if obj1 != obj2 and self.check_collision(obj1, obj2):
+                    print("Colisión detectada entre", obj1, "y", obj2)
+
+    def check_collision(self, obj1, obj2):
+        x1, y1, width1, height1 = obj1.collision_area
+        x2, y2, width2, height2 = obj2.collision_area
+        return x1 < x2 + width2 and x1 + width1 > x2 and y1 < y2 + height2 and y1 + height1 > y2
