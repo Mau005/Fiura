@@ -5,6 +5,7 @@ from core.animation import Animation
 from entity.entity import Entity
 
 
+from core.core import TypeFlag
 
 
 
@@ -17,12 +18,28 @@ class Player(Entity):
         self.Name = kwargs.get("Name")
         self.Health = 100 if kwargs.get("Health") is None else kwargs.get("Health")
         self.HealthMax = 100 if kwargs.get("HealthMax") is None else kwargs.get("HealthMax")
+        self.flag = TypeFlag.PLAYER
+        self.speed = 1.2
         
         
     def draw(self, **kwargs):
         #Actions Animations
         self.animation.draw(**kwargs)
         return super().draw(**kwargs)
+    
+    def movemens(self, coord:Coordinates, dt):
+        
+        speed =  self.speed * dt
+        if coord.x > 0:
+            self.coord.x +=  speed
+        if coord.x < 0:
+            self.coord.x -=  speed
+        if coord.y > 0:
+            self.coord.y += speed
+        if coord.y < 0:
+            self.coord.y -= speed
+        return [speed, coord]
+            
     
     def update(self, *args):
         pass

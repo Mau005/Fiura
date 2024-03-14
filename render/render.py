@@ -7,7 +7,7 @@ from kivy.uix.widget import Widget
 from configuration.constants import LIMIT_VIEW_Y, LIMIT_VIEW_X
 from configuration.constants import TypeObject
 from core.coordinates import Coordinates
-from core.core import Core, ItemInternal
+from core.core import Core, ItemInternal, Direction
 from core.managerobject import ManagerObject
 from entity.floor import Floor
 from entity.player import Player
@@ -15,10 +15,10 @@ from maps.map import Map
 
 
 class Render(Widget):
-    def __init__(self, window, **kwargs):
+    def __init__(self, size_internal, **kwargs):
         super().__init__(**kwargs)
         self.size_hint = [None, None]
-        self.size = window
+        self.size = size_internal
         self.core = Core()
         self.manager_object = ManagerObject(self.core)
         self.player = Player(self.manager_object, 1, Coordinates(1, 2, 0))
@@ -79,11 +79,30 @@ class Render(Widget):
                     delta=kwargs.get("delta"),
                     limit_size=self.limit_size_execute(),
                     canvas=self.canvas)
+                
+    def movements_player(self,key, dt):
+        self.player.animation.set_movements(True)
+        if 119 in key: #w
+            self.player.animation.set_direction(Direction.NORTH)
+            return self.player.movemens(Coordinates(0,1,0), dt)
+        elif 97 in key: #a
+            self.player.animation.set_direction(Direction.WEST)
+            return self.player.movemens(Coordinates(-1,0,0), dt)
+        elif 115 in key: #s
+            self.player.animation.set_direction(Direction.SOUTH)
+            return self.player.movemens(Coordinates(0,-1,0), dt)
+        elif 100 in key: #d
+            self.player.animation.set_direction(Direction.EAST)
+            return self.player.movemens(Coordinates(1,0,0), dt)
+        else:
+            self.player.animation.set_movements(False)
+            return [0, Coordinates(0,0,0)]
 
-    def update(self, *args):
+    def update(self, **kwargs):
+        speed, coord  =self.movements_player(kwargs.get("keyboard"), kwargs.get("delta"))
         for index in self.render_layers.keys():
             for elements in self.render_layers.get(index):
-                elements.update()
+                elements.update(player_cord=[speed, coord], **kwargs)
 
     def check_collisions(self):
         for obj1 in self.collidable_objects:
