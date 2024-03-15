@@ -49,7 +49,6 @@ def transform_type_object(id_str: str) -> TypeObject:
 
 
 def transform_direction(payload: dict) -> dict:
-    print(payload)
     content = payload.get("DirectionSprite")
     if content is None:
         return {}

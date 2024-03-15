@@ -12,7 +12,7 @@ class Animation:
         self.__direction_now = self.__outfits_internal.DataFactory.DirectionSprite[self.direction_flag][0]
         self.__content_direction_now = self.__outfits_internal.DataFactory.DirectionSprite[self.direction_flag]
         self.__movements = True
-        self.rectangle= rectangle
+        self.rectangle = rectangle
         self.rectangle.source = self.__manager.get_sprite_outfits_id(self.__outfits_internal.DataFactory.NameSprite,
                                                                    self.__direction_now)
         self._animation_count = .0
@@ -38,4 +38,3 @@ class Animation:
                 self.__direction_now = int(self._animation_count)
                 name_id_sprite = self.__manager.get_sprite_outfits_id(self.__outfits_internal.DataFactory.NameSprite, self.__content_direction_now[int(self.__direction_now)])
                 self.rectangle.source = name_id_sprite
-            

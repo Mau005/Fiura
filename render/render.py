@@ -4,7 +4,7 @@ from typing import Optional
 from kivy.graphics import Rectangle
 from kivy.uix.widget import Widget
 
-from configuration.constants import LIMIT_VIEW_Y, LIMIT_VIEW_X
+from configuration.constants import LIMIT_VIEW_Y, LIMIT_VIEW_X, LIMIT_VIEW_PLAYER_X, LIMIT_VIEW_PLAYER_Y
 from configuration.constants import TypeObject
 from core.coordinates import Coordinates
 from core.core import Core, ItemInternal, Direction
@@ -21,11 +21,13 @@ class Render(Widget):
         self.size = size_internal
         self.core = Core()
         self.manager_object = ManagerObject(self.core)
-        self.player = Player(self.manager_object, 1, Coordinates(1, 2, 0))
+        self.player = Player(self.manager_object, 1, Coordinates(0, 0, 0))
         self.map = Map(100, 100)
-        for index in range(0, 1000):
-            self.map.set_position_map(Coordinates(random.randint(0, 10), random.randint(0, 10), random.randint(0, 10)),
-                                      random.randint(0, 3), )
+        self.map.set_position_map(Coordinates(0,0,0), 1)
+        self.map.set_position_map(Coordinates(1,0,0), 2)
+        self.map.set_position_map(Coordinates(2,0,0), 2)
+        self.map.set_position_map(Coordinates(3,0,0), 2)
+        
 
         self.render_layers = {
             1: [],  # Floor
@@ -54,11 +56,12 @@ class Render(Widget):
                             if sprite_id is None:
                                 continue
                             floor = Floor(Coordinates(x, y, 0), source_texture=sprite_id[0])
+                            print("entra aca?")
                             self.add_widget(floor)
                             self.render_layers[1].append(floor)
                     except AttributeError as err:
                         print(items)
-
+                        
     def limit_size_execute(self):
         return [(self.size[0] / LIMIT_VIEW_X), (self.size[1] / LIMIT_VIEW_Y)]
 
@@ -99,6 +102,7 @@ class Render(Widget):
             return [0, Coordinates(0,0,0)]
 
     def update(self, **kwargs):
+        
         speed, coord  =self.movements_player(kwargs.get("keyboard"), kwargs.get("delta"))
         for index in self.render_layers.keys():
             for elements in self.render_layers.get(index):

@@ -17,22 +17,16 @@ class MyGame(App):
         self.render = Render(self.size_internal)
         Clock.schedule_interval(self.update, 1 / 60)
         Clock.schedule_interval(self.draw, 1 / 60)
-        
         self.key = set()
         
     def on_keyboard_down(self, *args):
         self.key.add(args[1])
-        print(f"Apreto tecla {args}")
-        pass
     
     def on_keyboard_up(self, *args):
         self.key.discard(args[1])
-        print(f"suelto Tecla {args}")
-        pass
     
     def on_keyboard_close(self, *args):
-        pass#Window.unbind(on_key_down=self.on_keyboard_down)
-        #Window.unbind(on_key_up=self.on_keyboard_up)
+        pass
         
     def movements_keyboard(self, dt):
         pass
@@ -42,6 +36,7 @@ class MyGame(App):
         self.render.draw_major(delta=args[0], window=self.size_internal)
 
     def update(self, *args):
+        self.title = f"POSX: {self.render.player.coord.x} POSY: {self.render.player.coord.y}"
         self.render.update(delta=args[0], keyboard=self.key)
 
     def build(self):

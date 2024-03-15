@@ -3,8 +3,10 @@ from enum import Enum, auto
 LANGUAGE_PATH_ESP = "data/language/esp.txt"
 LANGUAGE_PATH_EN = "data/language/en.txt"
 
-LIMIT_VIEW_X = 16
-LIMIT_VIEW_Y = 10
+LIMIT_VIEW_X = 12
+LIMIT_VIEW_Y = 6
+LIMIT_VIEW_PLAYER_X = 5
+LIMIT_VIEW_PLAYER_Y = 3
 SQUARE = [32, 32]
 
 

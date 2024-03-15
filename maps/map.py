@@ -7,6 +7,9 @@ class Map:
         self._map = [[0] * x for _ in range(y)]
 
     def get_position_map(self, coord: Coordinates) -> list:
+        print(coord)
+        if coord.x < 0 or coord.y < 0:
+            return None
         return self._map[coord.x][coord.y]
 
     def set_position_map(self, coord: Coordinates, id_object: int) -> None:
