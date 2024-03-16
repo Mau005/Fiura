@@ -1,34 +1,38 @@
 {
   "1": {
-    "TypeFlag": 1,
+    "TypeObject": 1,
     "NameSprite": "floor.png",
-    "Sprites": [
-      1
-    ],
-    "Animation": false,
-    "AnimatedSequence": []
+    "Status_Animation": false,
+    "DirectionSprite": {
+      "2": [
+        1
+      ]
+    }
   },
   "2": {
-    "TypeFlag": 1,
+    "TypeObject": 1,
     "NameSprite": "floor.png",
-    "Sprites": [
-      2
-    ],
-    "Animation": false,
-    "AnimatedSequence": []
+    "Status_Animation": false,
+    "DirectionSprite": {
+      "2": [
+        2
+      ]
+    }
   },
   "3": {
-    "TypeFlag": 1,
+    "TypeObject": 1,
     "NameSprite": "floor.png",
-    "Sprites": [
-      3
-    ],
-    "Animation": false,
-    "AnimatedSequence": []
+    "Status_Animation": false,
+    "DirectionSprite": {
+      "2": [
+        3
+      ]
+    }
   },
   "4": {
-    "TypeFlag": 7,
+    "TypeObject": 7,
     "NameSprite": "human.png",
+    "Status_Animation": true,
     "DirectionSprite": {
       "1": [
         3,
@@ -53,6 +57,21 @@
         6,
         10,
         14
+      ]
+    }
+  },
+  "5": {
+    "TypeObject": 1,
+    "NameSprite": "water_animation.png",
+    "Status_Animation": true,
+    "DirectionSprite": {
+      "2": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
       ]
     }
   }

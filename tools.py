@@ -17,8 +17,8 @@ def generate_atlas(nameFIle,size_x, size_y, quad_x, quad_y):
 
 
 import json
-generate = generate_atlas("human.atlas",256,256, 64,64)
+generate = generate_atlas("human.atlas",256,32, 32,32)
 
-with open("assets/human.atlas", "w") as file:
+with open("assets/water_animation.atlas", "w") as file:
     file.write(json.dumps(generate, indent=1))
     

@@ -43,6 +43,8 @@ class TypeObject(Enum):
     PICKABLE = auto()
     DRINKABLE = auto()
     OUTFITS = auto()
+    FLOOR_ANIMATION = auto()
+    NULL = auto()
 
 
 class Gender(Enum):

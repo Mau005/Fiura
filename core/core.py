@@ -60,100 +60,81 @@ def transform_direction(payload: dict) -> dict:
     }
 
 
-class DataInternal:
+class DataFactory:
     def __init__(self, payload: dict) -> None:
-        self.TypeFlag: Optional[TypeObject] = transform_type_object(payload.get("TypeFlag"))
-        self.NameSprite: Optional[str] = payload.get("NameSprite")
-        self.Sprites: Optional[list] = payload.get("Sprites")
-        self.Animation: Optional[bool] = payload.get("Animation")
-        self.AnimatedSequence = tuple(payload.get("AnimatedSequence", []))
-        self.DirectionSprite: Optional[dict] = transform_direction(payload)
+        self.type_object: Optional[TypeObject] = transform_type_object(payload.get("TypeObject"))
+        self.name_sprite: Optional[str] = payload.get("NameSprite")
+        self.status_animation: Optional[bool] = payload.get("Status_Animation")
+        self.direction_sprite: Optional[dict] = transform_direction(payload)
 
-    def __str__(self) -> str:
-        return '''
-        self.TypeFlag = {}
-        self.NameSprite = {}
-        self.Sprites = {}
-        self.Animation = {}
-        self.AnimatedSequence = {}
-        self.DirectionSprite = {}
-
-    '''.format(self.TypeFlag, self.NameSprite, self.Sprites, self.Animation, self.AnimatedSequence,
-               self.DirectionSprite)
+    def __str__(self):
+        return str(self.__dict__)
 
 
 class ManagerDataInternal:
     def __init__(self, payload):
-        self.IDDataFactory = payload.get("IDDataFactory")
-        self.DataFactory: Optional[DataInternal] = None
+        self.name = payload.get("Name")
+        self.description = payload.get("Description")
+        self.id_data_factory = payload.get("IDDataFactory")
+        self.data_factory: Optional[DataFactory] = None
 
-    def add_data_factory(self, data_factory: DataInternal):
-        self.DataFactory = data_factory
+    def add_data_factory(self, data_factory: DataFactory):
+        self.data_factory = data_factory
+
+    def __str__(self) -> str:
+        return str(self.__dict__)
 
 
-class OutfitsInternal(ManagerDataInternal):
+class OutfitsDataInternal(ManagerDataInternal):
     def __init__(self, payload):
         super().__init__(payload)
-        self.FileSprite = payload.get("FileSprite")
-        self.Gender = transform_gender_flag(payload.get("Gender"))
-        self.Name = payload.get("Name")
+        self.gender = transform_gender_flag(payload.get("Gender"))
 
 
-class ItemInternal(ManagerDataInternal):
-    def __init__(self, payload: dict) -> None:
-        super().__init__(payload)
-        self.Name = payload.get("Name")
-        self.Description = payload.get("Description")
+def import_json_default(path_file) -> dict:
+    with open(path_file, "r") as file:
+        return json.load(file)
 
-    def __str__(self):
-        return '''
-        seslf.self.IDDataFactory = {}
-        self.Name = {}
-        self.Description = {}
-        self.Object = {}
-        '''.format(self.IDDataFactory, self.Name, self.Description, self.DataFactory)
+
+def __type_check_enums(id_str: str) -> int:
+    if isinstance(id_str, int):
+        return id_str
+    if id_str.isnumeric():
+        return int(id_str)
+    else:
+        raise Exception(ErrorType.ERROR_TYPE.value)
+
+
+def transform_type_flag(id_str: str) -> TypeFlag:
+    id_value = __type_check_enums(id_str)
+    if id_value == TypeFlag.PLAYER.value:
+        return TypeFlag.PLAYER
+    elif id_value == TypeFlag.ENEMY.value:
+        return TypeFlag.ENEMY
+    elif id_value == TypeFlag.NPC.value:
+        return TypeFlag.NPC
+    elif id_value == TypeFlag.SOUND.value:
+        return TypeFlag.SOUND
+    else:
+        raise Exception(f"ID: {id_value}: {ErrorType.ERROR_FLAG.value}")
+
+
+def preparing_data_internal(file_path, data_indent: DataIdentifier) -> dict:
+    new_data = {}
+    data = import_json_default(file_path)
+    for key in data.keys():
+        key_proceeding = int(key)
+        if data_indent == DataIdentifier.DATA:
+            new_data.update({key_proceeding: DataFactory(data.get(key))})
+        elif data_indent == DataIdentifier.ITEMS:
+            new_data.update({key_proceeding: ManagerDataInternal(data.get(key))})
+        elif data_indent == DataIdentifier.OUTFITS:
+            new_data.update({key_proceeding: OutfitsDataInternal(data.get(key))})
+        else:
+            raise Exception(ErrorType.ERROR_FLAG.value)
+    return new_data
 
 
 class Core:
     def __init__(self) -> None:
         pass
-
-    def import_json_default(self, path_file) -> dict:
-        with open(path_file, "r") as file:
-            return json.load(file)
-
-    def __type_check_enums(self, idstr: str) -> int:
-        if isinstance(idstr, int):
-            return idstr
-        if idstr.isnumeric():
-            return int(idstr)
-        else:
-            raise Exception(ErrorType.ERROR_TYPE.value)
-
-    def transform_type_flag(self, id_str: str) -> TypeFlag:
-        id_value = self.__type_check_enums(id_str)
-        if id_value == TypeFlag.PLAYER.value:
-            return TypeFlag.PLAYER
-        elif id_value == TypeFlag.ENEMY.value:
-            return TypeFlag.ENEMY
-        elif id_value == TypeFlag.NPC.value:
-            return TypeFlag.NPC
-        elif id_value == TypeFlag.SOUND.value:
-            return TypeFlag.SOUND
-        else:
-            raise Exception(f"ID: {id_value}: {ErrorType.ERROR_FLAG.value}")
-
-    def preparing_data_internal(self, file_path, data_indent: DataIdentifier) -> dict:
-        new_data = {}
-        data = self.import_json_default(file_path)
-        for key in data.keys():
-            key_proceeding = int(key)
-            if data_indent == DataIdentifier.DATA:
-                new_data.update({key_proceeding: DataInternal(data.get(key))})
-            elif data_indent == DataIdentifier.ITEMS:
-                new_data.update({key_proceeding: ItemInternal(data.get(key))})
-            elif data_indent == DataIdentifier.OUTFITS:
-                new_data.update({key_proceeding: OutfitsInternal(data.get(key))})
-            else:
-                raise Exception(ErrorType.ERROR_TYPE)
-        return new_data

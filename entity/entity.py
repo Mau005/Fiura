@@ -26,7 +26,6 @@ class Entity(Widget):
 
     def __adjust_canvas(self, **kwargs):
         limit_size = kwargs.get("limit_size")
-        #if not (limit_size[0] == self.size[0] and self.size[1] == limit_size[1]):
         if not (self.flag == TypeFlag.PLAYER):
             self.pos = [self.coord.x * limit_size[0], self.coord.y * limit_size[1]]
 
@@ -40,12 +39,12 @@ class Entity(Widget):
 
     def draw_square(self, **kwargs):
         pass
-    
+
     def movemens(self, coord, speed):
         if coord.x > 0:
-            self.coord.x -=  speed
+            self.coord.x -= speed
         if coord.x < 0:
-            self.coord.x +=  speed
+            self.coord.x += speed
         if coord.y > 0:
             self.coord.y -= speed
         if coord.y < 0:
@@ -54,5 +53,5 @@ class Entity(Widget):
     def update(self, **kwargs):
         if not (self.flag == TypeFlag.PLAYER):
             speed, coord = kwargs.get("player_cord")
-            self.movemens(coord,speed)
+            self.movemens(coord, speed)
         pass
