@@ -1,0 +1,120 @@
+<PopOptional>:
+    size_hint: .5, .5
+    title: "Size Quad for Imaages"
+    load_button:load_button
+    BoxLayout:
+        orientation:"vertical"
+        Label:
+            size_hint: 1, .5
+        GridLayout:
+            size_hint: 1, .3
+            rows: 2
+            cols: 2
+            Label:
+                text: "Size-x"
+            TextInput:
+                id:size_x
+                text:"64"
+            Label:
+                text: "Size-y"
+            TextInput:
+                id:size_y
+                text:"64"
+        BoxLayout:
+            padding: 10
+            size_hint: 1, .2
+            orientation: "horizontal"
+            Button:
+                text: "Cancel"
+                on_press : root.dismiss()
+            Button:
+                id:load_button
+                on_press: root.dismiss()
+                text: "Load"
+
+
+<Scene>:
+    id: scene
+    img_rect:img_rect
+    BoxLayout:
+        orientation: "vertical"
+
+    ActionBar:
+        pos_hint: {'top':1}
+        size_hint: 1, .05
+        ActionView:
+            use_separator: True
+            ActionPrevious:
+                title: 'Sprite Editor'
+                with_previous: False
+            ActionOverflow:
+            ActionButton:
+                important: True
+                text: "Importante"
+            ActionGroup:
+                text:"File"
+                ActionButton:
+                    text: "Nuevo"
+                ActionButton:
+                    text: "Abrir"
+                    on_press: root.open_file()
+                ActionButton:
+                    text: "Guardar"
+                ActionButton:
+                    text: "Salir"
+                    on_press: root.salir()
+            ActionGroup:
+                text: "Edicion"
+                ActionButton:
+                    text: "Reiniciar"
+                ActionButton:
+                    text: "Copiar"
+                ActionButton:
+                    text: "Preview"
+            ActionGroup:
+                text: "Ayuda"
+                ActionButton:
+                    text: "Acerca"
+                    on_press: root.acerca()
+                ActionButton:
+                    text: "WebSite"
+                ActionButton:
+                    text: "Ayuda"
+
+    
+    BoxLayout:
+        orientation: "horizontal"
+        BoxLayout:
+            orientation: "vertical"
+            size_hint: .2, .95
+            canvas.before:
+                Color:
+                    rgba: 1 , 0, 1,1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            ScrollView:
+                do_scroll_x: False
+                do_scroll_y: True
+                height: root.height - 50
+
+                BoxLayout:
+                    id: container_atributes
+                    orientation: "vertical"
+                    size_hint_y: None  # Fija la altura del contenido
+                    height: self.minimum_height
+                    Label:
+                        text: "Sources Images"
+                        size_hint_y: None
+                        height: 40
+
+        BoxLayout:
+            size_hint: .8, .95
+            id: container
+            Image:
+                id: img_rect
+                pos: self.pos
+                size: self.size
+
+            
