@@ -35,6 +35,7 @@ class Direction(Enum):
     SOUTH = auto()
     WEST = auto()
     EAST = auto()
+    NULL = auto()
 
 
 class KeyboardKey(Enum):

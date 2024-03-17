@@ -1,13 +1,10 @@
-from maps.map import Map
-from core.coordinates import Coordinates
-from configuration.constants import LIMIT_VIEW_PLAYER_X, LIMIT_VIEW_PLAYER_Y, LIMIT_VIEW_X, LIMIT_VIEW_Y
-
-mapa = Map(10,10)
-
-player= Coordinates(0,1,0)
 
 
-for x in range(0, mapa.get_len_map_x):
-    for y in range( 0, mapa.get_len_map_y(x)):
-        
+size__father = [350,350]
 
+
+def calculation_collider(size_father, points ={"xy": [150,120], "ab":  [1,32]}):
+    
+    a = size_father[0]
+    a = a * points
+    b = size_father[1]

@@ -17,7 +17,7 @@ class Player(Entity):
         self.Health = 100 if kwargs.get("Health") is None else kwargs.get("Health")
         self.HealthMax = 100 if kwargs.get("HealthMax") is None else kwargs.get("HealthMax")
         self.flag = TypeFlag.PLAYER
-        self.speed = 1.2
+        self.speed = 3.5
 
     def draw(self, **kwargs):
         limit_size = kwargs.get("limit_size")

@@ -1,6 +1,6 @@
 from typing import Optional
 
-from kivy.graphics import Rectangle
+from kivy.graphics import Rectangle, Color
 from kivy.uix.widget import Widget
 
 from configuration.constants import KeyboardKey, LIMIT_VIEW_Y, LIMIT_VIEW_X, LIMIT_VIEW_PLAYER_X, \
@@ -23,7 +23,12 @@ class Render(Widget):
         self.manager_object = ManagerObject()
         self.player = Player(self.manager_object, 1, Coordinates(0, 0, 0))
         self.map = Map(100, 100)
+        self.map.set_position_map(Coordinates(0, 0, 0), 4)
         self.map.set_position_map(Coordinates(2, 2, 0), 16)
+        self.map.set_position_map(Coordinates(6, 2, 0), 16)
+        self.map.set_position_map(Coordinates(3, 2, 0), 16)
+        self.map.set_position_map(Coordinates(4, 2, 0), 16)
+        self.map.set_position_map(Coordinates(5, 2, 0), 16)
         self.collide = []
 
         self.render_layers = {
@@ -36,6 +41,7 @@ class Render(Widget):
 
         with self.canvas.before:
             # self.fbo = Fbo(size=self.size)
+            Color(1,0,1)
             self.rectangle = Rectangle(pos=self.pos, size=self.size)
         self.add_widget(self.player)
         self.init_map()
@@ -89,7 +95,7 @@ class Render(Widget):
 
     def movements_player(self, key: list, dt):
         self.player.animation.set_movements(True)
-        content = [0, Coordinates(0, 0, 0), None]
+        content = [0, Coordinates(0, 0, 0), Direction.NULL]
         if KeyboardKey.W.value in key:  # w
             content = self.player.movement(DirectionPlayer.NORTH.value, dt)
         elif KeyboardKey.A.value in key:  # a
@@ -106,17 +112,35 @@ class Render(Widget):
     def update(self, **kwargs):
         set_keyboard = kwargs.get("keyboard")
         delta = kwargs.get("delta")
-
-        speed, coord, flag_direction = self.movements_player(set_keyboard, delta)
+        status_col = False
 
         for elements in self.collide:
             if self.player.collide_widget(elements):
-                x = self.player.right + 5 >= elements.x
-                if x:
-                    if flag_direction is not None and flag_direction.EAST == Direction.EAST:
-                        coord = DirectionPlayer.WEST.value
+                print(type(elements))
+                status_col = True
 
-        self.update_map(speed, coord, **kwargs)
+        if status_col:
+            coord = Coordinates(0,0,0)
+            print("entro aca?")
+            delta = .09
+            if self.player.animation.direction_flag  == Direction.WEST:
+                self.player.movement(DirectionPlayer.EAST.value, delta)
+                coord = DirectionPlayer.EAST.value
+            elif self.player.animation.direction_flag  == Direction.EAST:
+                self.player.movement(DirectionPlayer.WEST.value, delta)
+                coord = DirectionPlayer.WEST.value
+            elif self.player.animation.direction_flag  == Direction.NORTH:
+                self.player.movement(DirectionPlayer.SOUTH.value, delta)
+                coord = DirectionPlayer.SOUTH.value
+            elif self.player.animation.direction_flag  == Direction.SOUTH:
+                self.player.movement(DirectionPlayer.NORTH.value, delta)
+                coord = DirectionPlayer.NORTH.value
+            self.update_map(self.player.speed * delta, coord, **kwargs)
+        else:
+            speed, coord, _ = self.movements_player(set_keyboard, delta)
+            self.update_map(speed, coord, **kwargs)
+            
+
 
     def update_map(self, speed, coord, **kwargs):
         for index in self.render_layers.keys():
