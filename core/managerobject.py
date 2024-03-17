@@ -18,6 +18,7 @@ class ManagerObject:
         self.sprites.update(import_json_default("assets/floor.atlas"))
         self.sprites.update(import_json_default("assets/human.atlas"))
         self.sprites.update(import_json_default("assets/water_animation.atlas"))
+        self.sprites.update(import_json_default("assets/edge_green.atlas"))
 
     def get_sprite_id(self, name_sprite, id_sprite: list):
         list_obj = []

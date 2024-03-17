@@ -1,13 +1,10 @@
-
-from core.coordinates import Coordinates
-from core.managerobject import ManagerObject
-from core.animation import Animation
-from entity.entity import Entity
+from configuration.constants import Direction
 from configuration.constants import LIMIT_VIEW_PLAYER_Y, LIMIT_VIEW_PLAYER_X, TypeObject
-
-
+from core.animation import Animation
+from core.coordinates import Coordinates
 from core.core import TypeFlag
-
+from core.managerobject import ManagerObject
+from entity.entity import Entity
 
 
 class Player(Entity):
@@ -21,28 +18,29 @@ class Player(Entity):
         self.HealthMax = 100 if kwargs.get("HealthMax") is None else kwargs.get("HealthMax")
         self.flag = TypeFlag.PLAYER
         self.speed = 1.2
-        
-        
+
     def draw(self, **kwargs):
-        #Actions Animations
         limit_size = kwargs.get("limit_size")
-        self.pos = [LIMIT_VIEW_PLAYER_X* limit_size[0], LIMIT_VIEW_PLAYER_Y* limit_size[1]]
+        self.pos = [LIMIT_VIEW_PLAYER_X * limit_size[0], LIMIT_VIEW_PLAYER_Y * limit_size[1]]
         self.animation.draw(**kwargs)
         return super().draw(**kwargs)
-    
-    def movemens(self, coord:Coordinates, dt):
-        speed =  self.speed * dt
+
+    def movement(self, coord: Coordinates, dt):
+        speed = self.speed * dt
         if coord.x > 0:
-            self.coord.x +=  speed
+            self.coord.x += speed
+            self.animation.set_direction(Direction.EAST)
         if coord.x < 0:
-            self.coord.x -=  speed
+            self.coord.x -= speed
+            self.animation.set_direction(Direction.WEST)
         if coord.y > 0:
             self.coord.y += speed
+            self.animation.set_direction(Direction.NORTH)
         if coord.y < 0:
             self.coord.y -= speed
-        return [speed, coord]
-            
-    
+            self.animation.set_direction(Direction.SOUTH)
+        return speed, coord, self.animation.direction_flag
+
     def update(self, *args):
         pass
 

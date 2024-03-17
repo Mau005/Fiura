@@ -10,6 +10,7 @@ class Entity(Widget):
         super().__init__(**kwargs)
         self.size_hint = [None, None]
         self.coord = coordinates if coordinates is not None else Coordinates(0, 0, 0)
+        self.collision = False
 
         self._flag = None
         with self.canvas:
@@ -40,7 +41,7 @@ class Entity(Widget):
     def draw_square(self, **kwargs):
         pass
 
-    def movemens(self, coord, speed):
+    def movement(self, coord, speed):
         if coord.x > 0:
             self.coord.x -= speed
         if coord.x < 0:
@@ -53,5 +54,5 @@ class Entity(Widget):
     def update(self, **kwargs):
         if not (self.flag == TypeFlag.PLAYER):
             speed, coord = kwargs.get("player_cord")
-            self.movemens(coord, speed)
+            self.movement(coord, speed)
         pass

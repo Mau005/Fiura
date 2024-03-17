@@ -74,5 +74,115 @@
         6
       ]
     }
+  },
+  "6": {
+    "TypeObject": 2,
+    "NameSprite": "edge_green.png",
+    "Status_Animation": false,
+    "DirectionSprite": {
+      "2": [
+        3
+      ]
+    }
+  },
+  "7": {
+    "TypeObject": 2,
+    "NameSprite": "edge_green.png",
+    "Status_Animation": false,
+    "DirectionSprite": {
+      "2": [
+        4
+      ]
+    }
+  },
+  "8": {
+    "TypeObject": 2,
+    "NameSprite": "edge_green.png",
+    "Status_Animation": false,
+    "DirectionSprite": {
+      "2": [
+        5
+      ]
+    }
+  },
+  "9": {
+    "TypeObject": 2,
+    "NameSprite": "edge_green.png",
+    "Status_Animation": false,
+    "DirectionSprite": {
+      "2": [
+        9
+      ]
+    }
+  },
+  "10": {
+    "TypeObject": 2,
+    "NameSprite": "edge_green.png",
+    "Status_Animation": false,
+    "DirectionSprite": {
+      "2": [
+        10
+      ]
+    }
+  },
+  "11": {
+    "TypeObject": 2,
+    "NameSprite": "edge_green.png",
+    "Status_Animation": false,
+    "DirectionSprite": {
+      "2": [
+        11
+      ]
+    }
+  },
+  "12": {
+    "TypeObject": 2,
+    "NameSprite": "edge_green.png",
+    "Status_Animation": false,
+    "DirectionSprite": {
+      "2": [
+        12
+      ]
+    }
+  },
+  "13": {
+    "TypeObject": 2,
+    "NameSprite": "edge_green.png",
+    "Status_Animation": false,
+    "DirectionSprite": {
+      "2": [
+        13
+      ]
+    }
+  },
+  "14": {
+    "TypeObject": 2,
+    "NameSprite": "edge_green.png",
+    "Status_Animation": false,
+    "DirectionSprite": {
+      "2": [
+        14
+      ]
+    }
+  },
+  "15": {
+    "TypeObject": 2,
+    "NameSprite": "edge_green.png",
+    "Status_Animation": false,
+    "DirectionSprite": {
+      "2": [
+        15
+      ]
+    }
+  },
+  "16": {
+    "TypeObject": 3,
+    "NameSprite": "edge_green.png",
+    "Status_Animation": false,
+    "DirectionSprite": {
+      "2": [
+        16
+      ]
+    }
   }
 }
