@@ -28,6 +28,7 @@ class TypeFlag(Enum):
     ENEMY = auto()
     NPC = auto()
     SOUND = auto()
+    NULL = auto()
 
 
 class Direction(Enum):

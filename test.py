@@ -1,10 +1,13 @@
 
 
-size__father = [350,350]
+DEBUG = "test"
 
-
-def calculation_collider(size_father, points ={"xy": [150,120], "ab":  [1,32]}):
+class test:
+    def __init__(self) -> None:
+        self.test = "GHola"
+        print(DEBUG)
+        
+        
+if __name__ == "__main__":
+    test()
     
-    a = size_father[0]
-    a = a * points
-    b = size_father[1]

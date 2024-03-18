@@ -21,14 +21,14 @@ class Render(Widget):
         self.size_hint = [None, None]
         self.size = size_internal
         self.manager_object = ManagerObject()
-        self.player = Player(self.manager_object, 1, Coordinates(0, 0, 0))
+        self.player = Player(self.manager_object, 1, "KraynoDev",Coordinates(0, 0, 0))
         self.map = Map(100, 100)
         self.map.set_position_map(Coordinates(0, 0, 0), 4)
-        self.map.set_position_map(Coordinates(2, 2, 0), 16)
-        self.map.set_position_map(Coordinates(6, 2, 0), 16)
-        self.map.set_position_map(Coordinates(3, 2, 0), 16)
-        self.map.set_position_map(Coordinates(4, 2, 0), 16)
-        self.map.set_position_map(Coordinates(5, 2, 0), 16)
+        self.map.set_position_map(Coordinates(2, 0, 0), 16)
+        self.map.set_position_map(Coordinates(3, 0, 0), 16)
+        self.map.set_position_map(Coordinates(4, 0, 0), 16)
+        
+        
         self.collide = []
 
         self.render_layers = {
@@ -40,10 +40,9 @@ class Render(Widget):
         }
 
         with self.canvas.before:
-            # self.fbo = Fbo(size=self.size)
-            Color(1,0,1)
+            # self.fbo = Fbo(size=self.size)            
             self.rectangle = Rectangle(pos=self.pos, size=self.size)
-        self.add_widget(self.player)
+            
         self.init_map()
 
     def init_map(self):
@@ -72,6 +71,7 @@ class Render(Widget):
                     self.collide.append(item)
                     self.render_layers[2].append(item)
                 self.add_widget(item)
+        self.add_widget(self.player)
 
     def limit_size_execute(self):
         return [(self.size[0] / LIMIT_VIEW_X), (self.size[1] / LIMIT_VIEW_Y)]
@@ -115,14 +115,12 @@ class Render(Widget):
         status_col = False
 
         for elements in self.collide:
-            if self.player.collide_widget(elements):
-                print(type(elements))
+            if self.player.collider.collide_widget(elements):
                 status_col = True
 
         if status_col:
             coord = Coordinates(0,0,0)
-            print("entro aca?")
-            delta = .09
+            delta = .025
             if self.player.animation.direction_flag  == Direction.WEST:
                 self.player.movement(DirectionPlayer.EAST.value, delta)
                 coord = DirectionPlayer.EAST.value

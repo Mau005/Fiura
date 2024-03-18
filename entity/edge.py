@@ -8,7 +8,7 @@ from entity.entity import Entity
 class Edge(Entity):
     def __init__(self, manager: ManagerObject, id_sprite: int, coordinates: Coordinates, type_object: TypeObject,
                  source_texture=None, **kwargs):
-        super().__init__(coordinates, source_texture, **kwargs)
+        super().__init__(coordinates, **kwargs)
 
         if type_object.OBJECT_SOLID:
             self.collision = True

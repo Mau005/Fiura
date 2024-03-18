@@ -1,5 +1,7 @@
 {
     "Display": {
-        "Resolution": "800x600"
+        "Resolution": "800x600",
+        "DebugMode": true,
+        "Language": "esp"
     }
 }

@@ -7,7 +7,7 @@ from entity.entity import Entity
 
 class Floor(Entity):
     def __init__(self, manager: ManagerObject, id_sprite: int, coordinates: Coordinates, source_texture=None, **kwargs):
-        super().__init__(coordinates, source_texture, **kwargs)
+        super().__init__(coordinates, **kwargs)
         self.manager = manager
         self.animation = Animation(id_sprite, self.manager, self.rectangle, TypeObject.FLOOR)
 
