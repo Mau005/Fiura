@@ -51,7 +51,7 @@ class TypeObject(Enum):
     EDGES = auto()
     OBJECT_SOLID = auto()
     OBJECT_NOT_SOLID = auto()
-    PICKABLE = auto()
+    PACKABLE = auto()
     DRINKABLE = auto()
     OUTFITS = auto()
     FLOOR_ANIMATION = auto()

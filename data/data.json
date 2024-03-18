@@ -176,7 +176,8 @@
     }
   },
   "16": {
-    "TypeObject": 3,
+    "TypeObject": 2,
+    "Collision": true,
     "NameSprite": "edge_green.png",
     "Status_Animation": false,
     "DirectionSprite": {

@@ -61,7 +61,7 @@ class Scene(FloatLayout):
             self.ids.container_atributes.add_widget(Button(text=key, size_hint_y=None, height=40))
 
     def open_file(self):
-        file = FileChooserPopup(self.procesing_load_file)
+        file = FileChooserPopup(self.processing_load_file)
         file.open()
 
     def on_load_file(self, *args):
@@ -78,7 +78,7 @@ class Scene(FloatLayout):
 
         self.on_execute_left_menu()
 
-    def procesing_load_file(self, *args):
+    def processing_load_file(self, *args):
         self.file_name = args[1][0]
         self.image = Image(source=self.file_name)
         self.size_pop.open()

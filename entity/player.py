@@ -3,31 +3,33 @@ from configuration.constants import LIMIT_VIEW_PLAYER_Y, LIMIT_VIEW_PLAYER_X, Ty
 from core.animation import Animation
 from core.coordinates import Coordinates
 from core.core import TypeFlag
-from core.managerobject import ManagerObject
+from core.manager_object import ManagerObject
 from entity.entity import Entity
 from kivy.uix.label import Label
 from core.collider import Collider
 class Player(Entity):
 
     def __init__(self, manager_obj: ManagerObject, id_outfit:int,name_player:str, coordinates: Coordinates, **kwargs):
-        super().__init__(coordinates,name=name_player, **kwargs)
         self.manager = manager_obj
-        self.animation = Animation(id_outfit, manager_obj, self.rectangle, TypeObject.OUTFITS)
+        self.outfits_factory = self.manager.get_outfits_attribute(id_outfit)
+        super().__init__(coordinates,name=name_player, data_factory=self.outfits_factory.data_factory, **kwargs)
+        
+        self.animation = Animation(self.outfits_factory.data_factory, self.manager,self.rectangle)
         self.Name = name_player
         self.Health = 100 if kwargs.get("Health") is None else kwargs.get("Health")
         self.HealthMax = 100 if kwargs.get("HealthMax") is None else kwargs.get("HealthMax")
         self.flag = TypeFlag.PLAYER
         self.speed = 3.5
-        self.collider =  Collider(.3,.2, .35, .5)
-        self.add_widget(self.collider)
+        self.collider.percentage_x_pos = .3
+        self.collider.percentage_y_pos = .2
+        self.collider.quad_percentage_x = .35
+        self.collider.quad_percentage_y = .5
 
     def draw(self, **kwargs):
         limit_size = kwargs.get("limit_size")
         self.pos = [LIMIT_VIEW_PLAYER_X * limit_size[0], LIMIT_VIEW_PLAYER_Y * limit_size[1]]
-        self.collider.draw(self.pos, self.size, **kwargs)
         self.animation.draw(**kwargs)   
         super().draw(**kwargs)
-        kwargs.get("canvas").add(self.collider.canvas)
         return 
 
     def movement(self, coord: Coordinates, dt):

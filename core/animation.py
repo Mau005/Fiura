@@ -4,23 +4,19 @@ from kivy.graphics import Rectangle
 
 from configuration.constants import TypeObject
 from core.core import Direction, OutfitsDataInternal, ManagerDataInternal
-from core.managerobject import ManagerObject
+from core.manager_object import ManagerObject
 
 
 class Animation:
-    def __init__(self, id_sprite: int, manager: ManagerObject, rectangle: Rectangle,
-                 type_obj: Optional[TypeObject] = TypeObject.FLOOR):
+    def __init__(self, data_factory, manager: ManagerObject, rectangle: Rectangle):
         self.__manager = manager
         self.direction_flag = Direction.SOUTH
-        if type_obj == TypeObject.OUTFITS:
-            self.object_internal: Optional[OutfitsDataInternal] = self.__manager.get_outfits_attribute(id_sprite)
-        else:
-            self.object_internal: Optional[ManagerDataInternal] = self.__manager.get_items_attribute(id_sprite)
-        self.__direction_now = self.object_internal.data_factory.direction_sprite[self.direction_flag][0]
-        self.__content_direction_now = self.object_internal.data_factory.direction_sprite[self.direction_flag]
+        self.data_factory = data_factory
+        self.__direction_now = self.data_factory.direction_sprite[self.direction_flag][0]
+        self.__content_direction_now = self.data_factory.direction_sprite[self.direction_flag]
         self.__movements = True
         self.rectangle = rectangle
-        self.rectangle.source = self.__manager.get_sprite_outfits_id(self.object_internal.data_factory.name_sprite,
+        self.rectangle.source = self.__manager.get_sprite_id(self.data_factory.name_sprite,
                                                                      self.__direction_now)
         self._animation_count = .0
         self._speed_animation = 8.0
@@ -29,17 +25,17 @@ class Animation:
         if not movements:
             self.__direction_now = self.__content_direction_now[0]
         self.__movements = movements
-        self.__direction_now = self.object_internal.data_factory.direction_sprite[self.direction_flag][0]
-        self.rectangle.source = self.__manager.get_sprite_outfits_id(self.object_internal.data_factory.name_sprite,
+        self.__direction_now = self.data_factory.direction_sprite[self.direction_flag][0]
+        self.rectangle.source = self.__manager.get_sprite_id(self.data_factory.name_sprite,
                                                                      self.__direction_now)
 
     def set_direction(self, direction: Direction) -> None:
-        self.__content_direction_now = self.object_internal.data_factory.direction_sprite[direction]
+        self.__content_direction_now = self.data_factory.direction_sprite[direction]
         self.__direction_now = self.__content_direction_now[0]
         self.direction_flag = direction
 
     def draw(self, **kwargs):
-        if not self.object_internal.data_factory.status_animation:
+        if not self.data_factory.status_animation:
             return
         dt: Optional[float] = kwargs.get("delta")
         if self.__movements:
@@ -49,7 +45,7 @@ class Animation:
                 if int(self._animation_count) >= len(self.__content_direction_now):
                     self._animation_count = 0
                 self.__direction_now = int(self._animation_count)
-                name_id_sprite = self.__manager.get_sprite_outfits_id(self.object_internal.data_factory.name_sprite,
+                name_id_sprite = self.__manager.get_sprite_id(self.data_factory.name_sprite,
                                                                       self.__content_direction_now[
                                                                           int(self.__direction_now)])
                 self.rectangle.source = name_id_sprite

@@ -2,7 +2,16 @@ import json
 from typing import Optional
 
 from configuration.constants import TypeObject, TypeFlag, ErrorType, DataIdentifier, Direction, Gender
+import csv
 
+def read_csv(path_file:str) ->dict:
+    data = []
+    with open(path_file, 'r', newline='') as file_csv:
+        read_csv_iterator = csv.reader(file_csv)
+        header = next(read_csv_iterator, None)
+        for fila in read_csv_iterator:
+            data.append(fila)
+    return {"header": header, "data":data}
 
 def transform_direction_flag(id_str) -> Direction:
     ids = int(id_str)
@@ -38,8 +47,8 @@ def transform_type_object(id_str: str) -> TypeObject:
         return TypeObject.OBJECT_SOLID
     elif id_value == TypeObject.OBJECT_NOT_SOLID.value:
         return TypeObject.OBJECT_NOT_SOLID
-    elif id_value == TypeObject.PICKABLE.value:
-        return TypeObject.PICKABLE
+    elif id_value == TypeObject.PACKABLE.value:
+        return TypeObject.PACKABLE
     elif id_value == TypeObject.DRINKABLE.value:
         return TypeObject.DRINKABLE
     elif id_value == TypeObject.OUTFITS.value:
@@ -64,6 +73,7 @@ class DataFactory:
     def __init__(self, payload: dict) -> None:
         self.type_object: Optional[TypeObject] = transform_type_object(payload.get("TypeObject"))
         self.name_sprite: Optional[str] = payload.get("NameSprite")
+        self.collision = True if payload.get("Collision") is not None and payload.get("Collision") else False
         self.status_animation: Optional[bool] = payload.get("Status_Animation")
         self.direction_sprite: Optional[dict] = transform_direction(payload)
 
@@ -72,8 +82,9 @@ class DataFactory:
 
 
 class ManagerDataInternal:
-    def __init__(self, payload):
+    def __init__(self, payload, key:int):
         self.name = payload.get("Name")
+        self.id = key
         self.description = payload.get("Description")
         self.id_data_factory = payload.get("IDDataFactory")
         self.data_factory: Optional[DataFactory] = None
@@ -86,8 +97,8 @@ class ManagerDataInternal:
 
 
 class OutfitsDataInternal(ManagerDataInternal):
-    def __init__(self, payload):
-        super().__init__(payload)
+    def __init__(self, payload, key):
+        super().__init__(payload,key)
         self.gender = transform_gender_flag(payload.get("Gender"))
 
 
@@ -127,9 +138,9 @@ def preparing_data_internal(file_path, data_indent: DataIdentifier) -> dict:
         if data_indent == DataIdentifier.DATA:
             new_data.update({key_proceeding: DataFactory(data.get(key))})
         elif data_indent == DataIdentifier.ITEMS:
-            new_data.update({key_proceeding: ManagerDataInternal(data.get(key))})
+            new_data.update({key_proceeding: ManagerDataInternal(data.get(key), key)})
         elif data_indent == DataIdentifier.OUTFITS:
-            new_data.update({key_proceeding: OutfitsDataInternal(data.get(key))})
+            new_data.update({key_proceeding: OutfitsDataInternal(data.get(key), key)})
         else:
             raise Exception(ErrorType.ERROR_FLAG.value)
     return new_data

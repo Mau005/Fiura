@@ -14,15 +14,14 @@ class MyGame(App):
         self.configuration = Configuration()
         Config.set('graphics', 'width', self.configuration.resolution[0])
         Config.set('graphics', 'height', self.configuration.resolution[1])
-        # Desactivar la capacidad de redimesnsionamiento
         Config.set('graphics', 'resizable', False)
+        Config.write()
         
         # TODO: Error android al tomor el teaclado Window.request_keyboard(self.on_keyboard_close, self, "text")
         Window.bind(on_key_down=self.on_keyboard_down)
         Window.bind(on_key_up=self.on_keyboard_up)
         self.size_internal = Window.size
-        self.render = Render(self.size_internal)
-        
+        self.render = Render(self.size_internal, self.configuration)
         
         Clock.schedule_interval(self.update, 1 / 60)
         Clock.schedule_interval(self.draw, 1 / 60)
@@ -46,7 +45,7 @@ class MyGame(App):
 
     def update(self, *args):
         self.title = f"Pos X: {self.render.player.coord.x} Pos Y: {self.render.player.coord.y}"
-        self.render.update(delta=args[0], keyboard=self.key)
+        self.render.update(delta=args[0], keyboard=self.key, conf=self.configuration)
 
     def build(self):
         return self.render

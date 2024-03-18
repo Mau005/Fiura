@@ -8,23 +8,26 @@ from configuration.constants import KeyboardKey, LIMIT_VIEW_Y, LIMIT_VIEW_X, LIM
     TypeObject, \
     DirectionPlayer, Direction
 from core.coordinates import Coordinates
-from core.managerobject import ManagerObject
+from core.manager_object import ManagerObject
 from entity.edge import Edge
 from entity.floor import Floor
 from entity.player import Player
 from maps.map import Map
+from core.core import ManagerDataInternal
 
 
 class Render(Widget):
-    def __init__(self, size_internal, **kwargs):
+    def __init__(self, size_internal, configuration, **kwargs):
         super().__init__(**kwargs)
         self.size_hint = [None, None]
+        self.configuration = configuration
+        self.load_map_complete = False
         self.size = size_internal
         self.manager_object = ManagerObject()
-        self.player = Player(self.manager_object, 1, "KraynoDev",Coordinates(0, 0, 0))
+        self.player = Player(self.manager_object, 1, "KraynoDev",Coordinates(0, 0, 0), configuration=self.configuration)
         self.map = Map(100, 100)
         self.map.set_position_map(Coordinates(0, 0, 0), 4)
-        self.map.set_position_map(Coordinates(2, 0, 0), 16)
+        self.map.set_position_map(Coordinates(1, 0, 0), 16)
         self.map.set_position_map(Coordinates(3, 0, 0), 16)
         self.map.set_position_map(Coordinates(4, 0, 0), 16)
         
@@ -42,7 +45,7 @@ class Render(Widget):
         with self.canvas.before:
             # self.fbo = Fbo(size=self.size)            
             self.rectangle = Rectangle(pos=self.pos, size=self.size)
-            
+        
         self.init_map()
 
     def init_map(self):
@@ -50,28 +53,30 @@ class Render(Widget):
         for x in range(self.map.get_len_map_x()):
             for y in range(self.map.get_len_map_y(x)):
                 id_items = self.map.get_position_map(Coordinates(x, y, 0))
-                type_object: Optional[TypeObject] = self.manager_object.exist_items_attribute(id_items)
+                item_factory: Optional[ManagerDataInternal] = self.manager_object.get_items_attribute(id_items)
                 item = None
-                if type_object == TypeObject.NULL:
+                x_target, y_target = 0,0
+                if item_factory is None:
                     continue
-                elif type_object == TypeObject.FLOOR:
-                    item = Floor(self.manager_object, id_items,
-                                 Coordinates(x - coord.x + LIMIT_VIEW_PLAYER_X, y - coord.y + LIMIT_VIEW_PLAYER_Y,
-                                             0))
+                else:
+                    x_target = x - coord.x + LIMIT_VIEW_PLAYER_X
+                    y_target =  y - coord.y + LIMIT_VIEW_PLAYER_Y
+                    
+                if item_factory.data_factory.type_object == TypeObject.FLOOR:
+                    item = Floor(self.manager_object, Coordinates(x_target, y_target, 0), item_factory, self.configuration)
                     self.render_layers[1].append(item)
-                elif type_object == TypeObject.EDGES:
-                    item = Edge(self.manager_object, id_items,
-                                Coordinates(x - coord.x + LIMIT_VIEW_PLAYER_X, y - coord.y + LIMIT_VIEW_PLAYER_Y, 0),
-                                type_object)
+                elif item_factory.data_factory.type_object == TypeObject.EDGES:
+                    item = Edge(self.manager_object,Coordinates(x_target,y_target, 0), item_factory, self.configuration)
                     self.render_layers[2].append(item)
-                elif type_object == TypeObject.OBJECT_SOLID:
-                    item = Edge(self.manager_object, id_items,
-                                Coordinates(x - coord.x + LIMIT_VIEW_PLAYER_X, y - coord.y + LIMIT_VIEW_PLAYER_Y,
-                                            0), type_object)
+                elif item_factory.data_factory.type_object == TypeObject.OBJECT_SOLID:
+                    item = Edge(self.manager_object,Coordinates(x_target, y_target, 0), item_factory,self.configuration)
+                    self.render_layers[2].append(item)
+                if item_factory.data_factory.collision:
                     self.collide.append(item)
-                    self.render_layers[2].append(item)
+                    
                 self.add_widget(item)
-        self.add_widget(self.player)
+
+        self.load_map_complete = True
 
     def limit_size_execute(self):
         return [(self.size[0] / LIMIT_VIEW_X), (self.size[1] / LIMIT_VIEW_Y)]
@@ -115,9 +120,12 @@ class Render(Widget):
         status_col = False
 
         for elements in self.collide:
-            if self.player.collider.collide_widget(elements):
-                status_col = True
-
+            if self.player.collider.collide_widget(elements.collider):
+                if self.load_map_complete:
+                    status_col = True
+                
+        
+                
         if status_col:
             coord = Coordinates(0,0,0)
             delta = .025
@@ -137,7 +145,7 @@ class Render(Widget):
         else:
             speed, coord, _ = self.movements_player(set_keyboard, delta)
             self.update_map(speed, coord, **kwargs)
-            
+                
 
 
     def update_map(self, speed, coord, **kwargs):

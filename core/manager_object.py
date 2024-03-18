@@ -20,15 +20,7 @@ class ManagerObject:
         self.sprites.update(import_json_default("assets/water_animation.atlas"))
         self.sprites.update(import_json_default("assets/edge_green.atlas"))
 
-    def get_sprite_id(self, name_sprite, id_sprite: list):
-        list_obj = []
-        for id_items in id_sprite:
-            if self.sprites.get(name_sprite, {}).get(str(id_items)) is None:
-                return None
-            list_obj.append("atlas://assets/%s/%s" % (name_sprite.split(".")[0], id_items))
-        return list_obj
-
-    def get_sprite_outfits_id(self, name_sprite, id_sprite):
+    def get_sprite_id(self, name_sprite, id_sprite):
         if self.sprites.get(name_sprite, {}).get(str(id_sprite)) is None:
             return None
         return "atlas://assets/%s/%s" % (name_sprite.split(".")[0], id_sprite)
@@ -38,6 +30,7 @@ class ManagerObject:
         if internal is None:
             raise Exception(f"Error load Outfits {id_outfits}")
         internal.add_data_factory(self._data.get(internal.id_data_factory))
+        internal.data_factory.collision = True
         return internal
 
     def exist_items_attribute(self, id_items) -> TypeObject:
