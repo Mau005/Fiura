@@ -1,21 +1,18 @@
+from configuration.configuration import Configuration
 from configuration.constants import Direction
 from configuration.constants import LIMIT_VIEW_PLAYER_Y, LIMIT_VIEW_PLAYER_X, TypeObject
 from core.animation import Animation
 from core.coordinates import Coordinates
-from core.core import TypeFlag
+from core.core import ManagerDataInternal, TypeFlag
 from core.manager_object import ManagerObject
-from entity.entity import Entity
+from entity.outfits import Outfits
 from kivy.uix.label import Label
 from core.collider import Collider
-class Player(Entity):
-
-    def __init__(self, manager_obj: ManagerObject, id_outfit:int,name_player:str, coordinates: Coordinates, **kwargs):
-        self.manager = manager_obj
-        self.outfits_factory = self.manager.get_outfits_attribute(id_outfit)
-        super().__init__(coordinates,name=name_player, data_factory=self.outfits_factory.data_factory, **kwargs)
-        
-        self.animation = Animation(self.outfits_factory.data_factory, self.manager,self.rectangle)
+class Player(Outfits):
+    def __init__(self, manager: ManagerObject,id_outfits, name_player:str, coordinates: Coordinates, configuration: Configuration, **kwargs):
         self.Name = name_player
+        super().__init__(manager, coordinates, id_outfits, configuration, name=self.Name,**kwargs)
+        
         self.Health = 100 if kwargs.get("Health") is None else kwargs.get("Health")
         self.HealthMax = 100 if kwargs.get("HealthMax") is None else kwargs.get("HealthMax")
         self.flag = TypeFlag.PLAYER

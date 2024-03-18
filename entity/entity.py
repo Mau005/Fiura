@@ -17,6 +17,7 @@ class Entity(Widget):
         self.size_hint = [None, None]
         self.coord = coordinates if coordinates is not None else Coordinates(0, 0, 0)
         self.collision = False
+        
         self.name = name
         self.label_name = Label(text=name, size_hint=[None, None])
         with self.canvas:

@@ -1,7 +1,7 @@
 from typing import Optional
 
 from kivy.graphics import Rectangle, Color
-from kivy.uix.widget import Widget
+from kivy.uix.floatlayout import FloatLayout
 
 from configuration.constants import KeyboardKey, LIMIT_VIEW_Y, LIMIT_VIEW_X, LIMIT_VIEW_PLAYER_X, \
     LIMIT_VIEW_PLAYER_Y, \
@@ -16,7 +16,7 @@ from maps.map import Map
 from core.core import ManagerDataInternal
 
 
-class Render(Widget):
+class Render(FloatLayout):
     def __init__(self, size_internal, configuration, **kwargs):
         super().__init__(**kwargs)
         self.size_hint = [None, None]
@@ -97,7 +97,7 @@ class Render(Widget):
                     delta=kwargs.get("delta"),
                     limit_size=self.limit_size_execute(),
                     canvas=self.canvas)
-
+        
     def movements_player(self, key: list, dt):
         self.player.animation.set_movements(True)
         content = [0, Coordinates(0, 0, 0), Direction.NULL]
@@ -123,8 +123,6 @@ class Render(Widget):
             if self.player.collider.collide_widget(elements.collider):
                 if self.load_map_complete:
                     status_col = True
-                
-        
                 
         if status_col:
             coord = Coordinates(0,0,0)
