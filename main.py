@@ -14,7 +14,7 @@ class MyGame(App):
         self.configuration = Configuration()
         Config.set('graphics', 'width', self.configuration.resolution[0])
         Config.set('graphics', 'height', self.configuration.resolution[1])
-        Config.set('graphics', 'resizable', False)
+        Config.set('graphics', 'resizable', True)
         Config.write()
         
         # TODO: Error android al tomor el teaclado Window.request_keyboard(self.on_keyboard_close, self, "text")

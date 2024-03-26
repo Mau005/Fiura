@@ -10,6 +10,7 @@ from configuration.constants import KeyboardKey, LIMIT_VIEW_Y, LIMIT_VIEW_X, LIM
 from core.coordinates import Coordinates
 from core.manager_object import ManagerObject
 from entity.edge import Edge
+from entity.enemy import Enemy
 from entity.floor import Floor
 from entity.player import Player
 from maps.map import Map
@@ -29,7 +30,8 @@ class Render(FloatLayout):
         self.map.set_position_map(Coordinates(0, 0, 0), 4)
         self.map.set_position_map(Coordinates(1, 0, 0), 16)
         self.map.set_position_map(Coordinates(3, 0, 0), 16)
-        self.map.set_position_map(Coordinates(4, 0, 0), 16)
+        self.map.set_position_map(Coordinates(0, 4, 0), 4)
+        self.map.entity[0][4] = 1
         
         
         self.collide = []
@@ -55,12 +57,21 @@ class Render(FloatLayout):
                 id_items = self.map.get_position_map(Coordinates(x, y, 0))
                 item_factory: Optional[ManagerDataInternal] = self.manager_object.get_items_attribute(id_items)
                 item = None
-                x_target, y_target = 0,0
-                if item_factory is None:
-                    continue
-                else:
+
+                x_target = x - coord.x + LIMIT_VIEW_PLAYER_X
+                y_target =  y - coord.y + LIMIT_VIEW_PLAYER_Y
+                
+                entity = self.map.entity[x][y]
+                if entity == 1:
                     x_target = x - coord.x + LIMIT_VIEW_PLAYER_X
                     y_target =  y - coord.y + LIMIT_VIEW_PLAYER_Y
+                    enemy = Enemy(self.manager_object, Coordinates(x_target, y_target, 0), 1, configuration=self.configuration, name="Ladron")
+                    self.render_layers[4].append(enemy)
+                    self.add_widget(enemy)
+                    self.collide.append(enemy)
+                if item_factory is None:
+                    continue
+
                     
                 if item_factory.data_factory.type_object == TypeObject.FLOOR:
                     item = Floor(self.manager_object, Coordinates(x_target, y_target, 0), item_factory, self.configuration)
@@ -73,7 +84,8 @@ class Render(FloatLayout):
                     self.render_layers[2].append(item)
                 if item_factory.data_factory.collision:
                     self.collide.append(item)
-                    
+                
+                
                 self.add_widget(item)
 
         self.load_map_complete = True

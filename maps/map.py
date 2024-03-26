@@ -5,6 +5,7 @@ class Map:
 
     def __init__(self, x, y) -> None:
         self._map = [[0] * x for _ in range(y)]
+        self.entity = [[0] * x for _ in range(y)]
 
     def get_position_map(self, coord: Coordinates) -> int:
         if coord.x < 0 or coord.y < 0:

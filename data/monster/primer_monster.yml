@@ -1,0 +1,22 @@
+Ladron:
+  IdOutfits: 1
+  Speed: 1.4
+  Health: 1300
+  Bestiary: human
+  Race: human
+  Experience: 150
+  Logic: 1
+  Sound_Text:
+    - 1
+    - 2
+  Loot:
+    - "23:.4"
+    - "25:.7" #ID del objeto: Probabildiad de loteo
+  Weakness:
+    Physical: 1
+    Holy: 1
+    Energy: 1
+  Strong:
+    Physical: 1
+    Holy: 1
+    Energy: 1

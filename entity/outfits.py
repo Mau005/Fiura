@@ -14,7 +14,6 @@ class Outfits(Entity):
         self.animation = Animation(self.outfits_factory.data_factory, self.manager,self.rectangle)
         self.flag = self.outfits_factory.data_factory.type_object
         self.id_item = self.outfits_factory.id
-        self.animation = Animation(self.outfits_factory.data_factory,self.manager,self.rectangle)
 
     def draw(self, **kwargs):
         self.animation.draw(**kwargs)
